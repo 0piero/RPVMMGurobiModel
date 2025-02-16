@@ -1,0 +1,44 @@
+from csv_reader import CSVReader
+from test_gurobi import resolve_modelo
+import numpy as np
+
+if __name__ == "__main__":
+    stock_layout_file = CSVReader("estoque_selected.csv")
+    sku_stock = stock_layout_file.get_column_values("SKU")
+    corredor_stock = stock_layout_file.get_column_values("CORREDOR")
+    andar_stock = stock_layout_file.get_column_values("ANDAR")
+    pecas_stock = stock_layout_file.get_column_values("PECAS")
+
+    data_q = {
+        (sku, corredor, andar): pecas
+        for sku, corredor, andar, pecas in zip(sku_stock, corredor_stock, andar_stock, pecas_stock)
+    }
+
+    product_boxes_file = CSVReader("caixas_selected.csv") 
+    sku_boxes = product_boxes_file.get_column_values("SKU")
+    caixa_id_boxes = product_boxes_file.get_column_values("CAIXA_ID")
+    pecas_boxes = product_boxes_file.get_column_values("PECAS")
+    onda_boxes = product_boxes_file.get_column_values("ONDA_ID")
+    classe_onda_boxes = product_boxes_file.get_column_values("CLASSE_ONDA")
+
+    P = list(set(sku_stock))
+    K = list(set(corredor_stock))
+    indices_P_of_k = {k: list(set(sku_stock[np.where(corredor_stock == k)])) for k in corredor_stock}
+    indices_K_of_p = {p: list(set(corredor_stock[np.where(sku_stock == p)])) for p in sku_stock}
+    A = list(set(andar_stock))
+    I = list(set(caixa_id_boxes))
+    J = list(set(onda_boxes))
+    C = list(set(classe_onda_boxes))
+
+    q_pi_input = {
+        (sku, caixa_id): pecas
+        for sku, caixa_id, pecas in zip(sku_boxes, caixa_id_boxes, pecas_boxes)
+    }
+    all_PI_combs = {(p,i) for p in P for i in I}
+    diff_combs = all_PI_combs.difference(set(q_pi_input.keys()))
+
+    additional_data_q_pi = {(p, i): 0 for (p,i) in list(diff_combs)}
+    q_pi_input.update(additional_data_q_pi)
+    
+    resolve_modelo(P, K, A, I, J, C, indices_K_of_p, indices_P_of_k, data_q, q_pi_input)
+

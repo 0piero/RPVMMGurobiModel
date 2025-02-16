@@ -6,7 +6,7 @@ class CSVReader:
         self.df = pd.read_csv(file)
 
     def get_column_values(self, column):
-        df_column =  self.df[column]
+        df_column = self.df[column]
         column_array = df_column.to_numpy()
         return column_array
 

@@ -1,13 +1,32 @@
 import itertools
 
-def valida_resultado(q_pi, Q_pka, corridor_indices, I, J, P, K, A, idx_K_of_p, idx_P_of_k, Z_j, x_ij, t_kaj, E_pkaj, C_i):
+
+def valida_resultado(
+    q_pi,
+    Q_pka,
+    corridor_indices,
+    I,
+    J,
+    P,
+    K,
+    A,
+    idx_K_of_p,
+    idx_P_of_k,
+    Z_j,
+    x_ij,
+    t_kaj,
+    E_pkaj,
+    C_i,
+):
     erros = []
 
     # Valida capacidade máxima de cada onda
     for j in J:
         total_pecas_onda = sum(q_pi[p, i] * x_ij[i, j].x for p in P for i in I)
         if total_pecas_onda > 6000:
-            erros.append(f"Onda {j} excede a capacidade máxima de 6000 peças com {total_pecas_onda} peças.")
+            erros.append(
+                f"Onda {j} excede a capacidade máxima de 6000 peças com {total_pecas_onda} peças."
+            )
 
     # Valida alocação única de caixas
     for i in I:
@@ -19,17 +38,22 @@ def valida_resultado(q_pi, Q_pka, corridor_indices, I, J, P, K, A, idx_K_of_p, i
     for i in I:
         for j in J:
             if x_ij[i, j].x >= 1 and C_i[i].x != Z_j[j].x:
-                erros.append(f"A caixa {i} (classe {C_i[i]}) foi alocada à onda {j} com classe {Z_j[j].x}.")
+                erros.append(
+                    f"A caixa {i} (classe {C_i[i]}) foi alocada à onda {j} com classe {Z_j[j].x}."
+                )
 
     # Valida corredores usados e produtos coletados
     for j in J:
         for k in K:
             for a in A:
                 if t_kaj[k, a, j].x >= 1:
-                    total_produtos_corredor = sum(E_pkaj[p, k, a, j].x for p in idx_P_of_k[k])
+                    total_produtos_corredor = sum(
+                        E_pkaj[p, k, a, j].x for p in idx_P_of_k[k]
+                    )
                     if total_produtos_corredor == 0:
                         erros.append(
-                            f"O corredor {k} no andar {a} foi marcado como usado na onda {j}, mas nenhum produto foi coletado.")
+                            f"O corredor {k} no andar {a} foi marcado como usado na onda {j}, mas nenhum produto foi coletado."
+                        )
 
     # Resultado da validação
     if not erros:

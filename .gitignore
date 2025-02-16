@@ -1,0 +1,7 @@
+# arquivos cache python
+__pycache__
+*.pyc
+
+# arquivos de dados
+*.csv
+

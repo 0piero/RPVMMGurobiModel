@@ -20,7 +20,7 @@ def resolve_modelo(P, K, A, I, J, C, idx_K_of_p, idx_P_of_k, data_Q, q_pi_input)
     Q_pka = {(p, k, a): 0 for p in P for k in K for a in A}
     Q_pka.update(data_Q)
 
-    corridor_indices = {k: idx + 1 for idx, k in enumerate(K)}
+    corridor_indices = {k: int(k) for k in K}
     C_to_index = {c: idx + 1 for idx, c in enumerate(C)}
 
     random.seed(42)

@@ -34,4 +34,4 @@ python3 main.py
 - **Observações**:
   - Os testes realizados com o modelo foram feitos utilizando uma licença acadêmica do Gurobi.
   - Certifique-se de ter o Gurobi instalado e configurado corretamente no ambiente de execução.
-  - Os principais funcionalidades do modelo (função objetivo e restrições) estão implementadas no arquivo `test_gurobi.py`
+  - As principais funcionalidades do modelo (função objetivo e restrições) estão implementadas no arquivo `test_gurobi.py`.

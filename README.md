@@ -25,12 +25,12 @@ Para selecionar as **$N$ primeiras caixas**, execute o seguinte comando:
 ```bash
 python3 selection_box_id.py caixas.csv caixas_selected.csv N
 python3 filter_sku.py caixas_selected.csv estoque.csv estoque_selected.csv
-
+```
 ## Execução do Modelo
 
 ```bash
 python3 main.py
-
+```
 - **Observações**:
 
   -Os testes realizados com o modelo foram feitos utilizando uma licença acadêmica do Gurobi.
